@@ -1,0 +1,773 @@
+@import "tailwindcss";
+
+:root {
+  --utc-cobalt: #1042d6;
+  --grid-line: rgb(255 255 255 / 0.12);
+  --grid-highlight: #ffffff;
+  --utc-ink: #101418;
+}
+
+@theme inline {
+  --color-cobalt: var(--utc-cobalt);
+  --color-ink: var(--utc-ink);
+  --font-display: var(--font-chakra-petch);
+  --font-body: var(--font-archivo);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+body {
+  background: var(--utc-cobalt);
+  color: #ffffff;
+  font-family: var(--font-body);
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.125rem;
+  letter-spacing: 0.12em;
+}
+
+.hero-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 6.2vw, 6.75rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* A solid bar in the proportions of the logo's underscore. */
+.hero-underscore {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.14em;
+  margin-left: 0.08em;
+  background: currentColor;
+}
+
+.hero-body {
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+/* Slideshow. The incoming slide sits on top; its photo slides in from its own
+   side and its copy from the other, line by line. The outgoing slide slides
+   out the same way it came in. */
+.hero {
+  --hero-in: cubic-bezier(0.16, 1, 0.3, 1);
+  --hero-out: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+.hero-slide {
+  z-index: 1;
+}
+
+.hero-slide[data-active] {
+  z-index: 2;
+}
+
+.hero-photo,
+.hero-copy > * {
+  transition: transform 420ms var(--hero-out);
+}
+
+.hero-photo[data-side="right"] {
+  transform: translateX(110%);
+}
+
+.hero-photo[data-side="left"] {
+  transform: translateX(-110%);
+}
+
+/* Copy children travel further than their own width so long lines clear the
+   edge of the page. */
+.hero-copy[data-side="right"] > * {
+  transform: translateX(calc(100% + 100vw / 2));
+}
+
+.hero-copy[data-side="left"] > * {
+  transform: translateX(calc(-100% - 100vw / 2));
+}
+
+.hero-slide[data-active] .hero-photo,
+.hero-slide[data-active] .hero-copy > * {
+  transform: none;
+  transition: transform 750ms var(--hero-in);
+}
+
+/* Page-load entrance for the first slide: the same moves as a slide change,
+   as keyframes so they run on first paint without waiting for JS. */
+@keyframes hero-photo-in-right {
+  from {
+    transform: translateX(110%);
+  }
+}
+
+@keyframes hero-copy-in-left {
+  from {
+    transform: translateX(calc(-100% - 100vw / 2));
+  }
+}
+
+.hero-slide[data-intro] .hero-photo {
+  animation: hero-photo-in-right 900ms var(--hero-in) 150ms both;
+}
+
+.hero-slide[data-intro] .hero-copy > * {
+  animation: hero-copy-in-left 900ms var(--hero-in) both;
+}
+
+.hero-slide[data-intro] .hero-copy > :nth-child(1) {
+  animation-delay: 300ms;
+}
+
+.hero-slide[data-intro] .hero-copy > :nth-child(2) {
+  animation-delay: 380ms;
+}
+
+.hero-slide[data-intro] .hero-copy > :nth-child(3) {
+  animation-delay: 460ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide[data-intro] .hero-photo,
+  .hero-slide[data-intro] .hero-copy > * {
+    animation: none;
+  }
+}
+
+.hero-slide[data-active] .hero-copy > :nth-child(1) {
+  transition-delay: 120ms;
+}
+
+.hero-slide[data-active] .hero-copy > :nth-child(2) {
+  transition-delay: 180ms;
+}
+
+.hero-slide[data-active] .hero-copy > :nth-child(3) {
+  transition-delay: 240ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo,
+  .hero-copy > * {
+    transform: none !important;
+  }
+
+  .hero-slide {
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+
+  .hero-slide[data-active] {
+    opacity: 1;
+  }
+}
+
+.interactive-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.interactive-grid .block {
+  position: absolute;
+  border: 0.5px solid var(--grid-line);
+  transition:
+    border-color 0.3s ease,
+    background-color 180ms ease;
+  box-sizing: border-box;
+}
+
+.interactive-grid .block.highlight {
+  border-color: var(--grid-highlight);
+}
+
+/* Dissolve cells carry the previous section's look until they flip. */
+.interactive-grid .block.fill {
+  background: var(--dissolve-fill);
+  border-color: var(--dissolve-line);
+}
+
+.interactive-grid .block.fill.highlight {
+  border-color: var(--dissolve-highlight);
+}
+
+/* White sections: the same grid drawn in cobalt. */
+.section-light {
+  --grid-line: rgb(16 66 214 / 0.14);
+  --grid-highlight: var(--utc-cobalt);
+  --dissolve-fill: var(--utc-cobalt);
+  --dissolve-line: rgb(255 255 255 / 0.12);
+  --dissolve-highlight: #ffffff;
+  background: #ffffff;
+  color: var(--utc-cobalt);
+}
+
+/* Cobalt sections after a white one: the dissolve band starts white. */
+.section-dark {
+  --dissolve-fill: #ffffff;
+  --dissolve-line: rgb(16 66 214 / 0.14);
+  --dissolve-highlight: var(--utc-cobalt);
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.about-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, 5vw, 5.5rem);
+  line-height: 1.02;
+  text-transform: uppercase;
+}
+
+/* Key words set like selected text in a code editor. The fill is a
+   background image so it can sweep in like a highlighter. */
+.hl {
+  display: inline-block;
+  padding: 0.02em 0.12em 0;
+  line-height: 0.98;
+  background: linear-gradient(var(--utc-cobalt), var(--utc-cobalt)) no-repeat 0 0 / 100% 100%;
+  color: #ffffff;
+}
+
+/* 45-degree cuts on the top-right and bottom-left corners. The inner layer of
+   a framed photo sits inset by the frame width; its cut is smaller by
+   width * (2 - sqrt 2) so the frame stays the same thickness along the cut. */
+.chamfer {
+  --cut: 3rem;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
+  );
+}
+
+.chamfer-inner {
+  --cut: calc(3rem - 6px * 0.5858);
+}
+
+.about-pillar-title {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.25rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.about-pillar-number {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.75rem;
+}
+
+.about-pillar-body {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+/* Reveal, in order: the photo slides in from the right, then the copy from
+   the left, then the pillars rise from below. Only CLUB, STUDENTS and
+   BUILDERS get the highlighter sweep afterwards. */
+.about {
+  --about-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about .about-copy > *,
+.about .about-photo,
+.about .about-pillars {
+  transition:
+    transform 800ms var(--about-ease),
+    opacity 500ms ease;
+}
+
+.about[data-reveal="pending"] .about-photo {
+  opacity: 0;
+  transform: translateX(80px);
+}
+
+.about[data-reveal="pending"] .about-copy > * {
+  opacity: 0;
+  transform: translateX(-48px);
+}
+
+.about[data-reveal="pending"] .about-pillars {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.about[data-reveal="pending"] .hl {
+  background-size: 0% 100%;
+  color: var(--utc-cobalt);
+}
+
+.about[data-reveal="shown"] .about-copy > *,
+.about[data-reveal="shown"] .about-photo,
+.about[data-reveal="shown"] .about-pillars {
+  opacity: 1;
+  transform: none;
+}
+
+.about[data-reveal="shown"] .about-copy > :nth-child(1) {
+  transition-delay: 300ms;
+}
+
+.about[data-reveal="shown"] .about-copy > :nth-child(2) {
+  transition-delay: 380ms;
+}
+
+.about[data-reveal="shown"] .about-copy > :nth-child(3) {
+  transition-delay: 460ms;
+}
+
+.about[data-reveal="shown"] .about-pillars {
+  transition-delay: 700ms;
+}
+
+/* Highlighter: the bar sweeps left to right; the letters turn white as it
+   passes their middle. */
+.about .hl {
+  transition:
+    background-size 420ms cubic-bezier(0.65, 0, 0.35, 1),
+    color 120ms linear;
+}
+
+.about[data-reveal="shown"] .hl:nth-of-type(1) {
+  transition-delay: 1000ms, 1180ms;
+}
+
+.about[data-reveal="shown"] .hl:nth-of-type(2) {
+  transition-delay: 1350ms, 1530ms;
+}
+
+.about[data-reveal="shown"] .hl:nth-of-type(3) {
+  transition-delay: 1700ms, 1880ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about .about-copy > *,
+  .about .about-photo,
+  .about .about-pillars,
+  .about .hl {
+    opacity: 1 !important;
+    transform: none !important;
+    background-size: 100% 100% !important;
+    color: inherit;
+    transition: none;
+  }
+
+  .about .hl {
+    color: #ffffff !important;
+  }
+}
+
+/* Up next: a row of poster cards that bleeds off the right edge, four and a
+   quarter cards wide, stepped one card at a time by the arrow buttons. */
+.upnext {
+  --upnext-in: cubic-bezier(0.16, 1, 0.3, 1);
+  --upnext-out: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+.upnext-arrow {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  color: #ffffff;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.upnext-arrow-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.upnext-arrow-frame polygon {
+  fill: transparent;
+  stroke: #ffffff;
+  stroke-width: 3;
+  transition: fill 200ms ease;
+}
+
+.upnext-arrow:hover {
+  color: var(--utc-cobalt);
+}
+
+.upnext-arrow:hover .upnext-arrow-frame polygon {
+  fill: #ffffff;
+}
+
+.upnext-arrow:focus-visible,
+.upnext-card:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.upnext-track {
+  --gap: 1.5rem;
+  display: flex;
+  column-gap: var(--gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 2.5rem;
+  padding: 0.75rem 2.5rem 1.25rem;
+  scrollbar-width: none;
+}
+
+.upnext-track::-webkit-scrollbar {
+  display: none;
+}
+
+.upnext-card {
+  position: relative;
+  flex: 0 0 calc((100vw - 2.5rem - 4 * var(--gap)) / 4.25);
+  aspect-ratio: 3 / 4;
+  scroll-snap-align: start;
+}
+
+/* The frame's bottom-right corner is cut parallel to the tab's slanted edge,
+   so the border breaks around the tab with a thin gap, as in the sketch. */
+.upnext-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  background: var(--utc-ink);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 2.125rem),
+    calc(100% - 1rem) 100%,
+    0 100%
+  );
+}
+
+/* Hover: a translucent cobalt panel slides up over the poster, then the
+   type and name slide in from the left. */
+.upnext-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.75rem 1.5rem;
+  background: rgb(16 66 214 / 0.96);
+  transform: translateY(101%);
+  transition: transform 380ms var(--upnext-out);
+}
+
+.upnext-overlay > * {
+  transform: translateX(-2.5rem);
+  transition: transform 380ms var(--upnext-out);
+}
+
+.upnext-card:hover .upnext-overlay,
+.upnext-card:focus-visible .upnext-overlay,
+.upnext-card:hover .upnext-overlay > *,
+.upnext-card:focus-visible .upnext-overlay > * {
+  transform: none;
+  transition: transform 550ms var(--upnext-in);
+}
+
+.upnext-card:hover .upnext-overlay > :nth-child(1),
+.upnext-card:focus-visible .upnext-overlay > :nth-child(1) {
+  transition-delay: 120ms;
+}
+
+.upnext-card:hover .upnext-overlay > :nth-child(2),
+.upnext-card:focus-visible .upnext-overlay > :nth-child(2) {
+  transition-delay: 180ms;
+}
+
+.upnext-card:hover .upnext-overlay > :nth-child(3),
+.upnext-card:focus-visible .upnext-overlay > :nth-child(3) {
+  transition-delay: 240ms;
+}
+
+.upnext-date {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.upnext-type {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.upnext-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.25rem, 3.4vw, 3.75rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* The slanted tab over the bottom-right corner, from the sketch. On hover it
+   grows to the left as the VIEW label opens. */
+.upnext-tab {
+  --slant: 1.5rem;
+  position: absolute;
+  right: -0.625rem;
+  bottom: -0.5625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.5rem;
+  height: 3.25rem;
+  padding: 0 calc(var(--slant) + 0.6rem);
+  background: #ffffff;
+  color: var(--utc-cobalt);
+  clip-path: polygon(
+    var(--slant) 0,
+    100% 0,
+    calc(100% - var(--slant)) 100%,
+    0 100%
+  );
+}
+
+.upnext-tab-label {
+  max-width: 0;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition:
+    max-width 380ms var(--upnext-out),
+    margin-right 380ms var(--upnext-out);
+}
+
+.upnext-card:hover .upnext-tab-label,
+.upnext-card:focus-visible .upnext-tab-label {
+  max-width: 5rem;
+  margin-right: 0.75rem;
+  transition:
+    max-width 480ms var(--upnext-in),
+    margin-right 480ms var(--upnext-in);
+}
+
+/* Reveal: heading from the left, arrows from the right, then the cards slide
+   in from the right one after another. */
+.upnext .upnext-head > *,
+.upnext .upnext-controls,
+.upnext .upnext-card {
+  transition:
+    transform 800ms var(--upnext-in),
+    opacity 500ms ease;
+}
+
+.upnext[data-reveal="pending"] .upnext-head > * {
+  opacity: 0;
+  transform: translateX(-48px);
+}
+
+.upnext[data-reveal="pending"] .upnext-controls {
+  opacity: 0;
+  transform: translateX(48px);
+}
+
+.upnext[data-reveal="pending"] .upnext-card {
+  opacity: 0;
+  transform: translateX(120px);
+}
+
+.upnext[data-reveal="shown"] .upnext-head > :nth-child(1) {
+  transition-delay: 300ms;
+}
+
+.upnext[data-reveal="shown"] .upnext-head > :nth-child(2),
+.upnext[data-reveal="shown"] .upnext-controls {
+  transition-delay: 380ms;
+}
+
+.upnext[data-reveal="shown"] .upnext-card {
+  transition-delay: calc(500ms + var(--i) * 80ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .upnext .upnext-head > *,
+  .upnext .upnext-controls,
+  .upnext .upnext-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none;
+  }
+
+  .upnext-overlay,
+  .upnext-overlay > * {
+    transform: none !important;
+  }
+
+  .upnext-overlay {
+    opacity: 0;
+    transition: opacity 160ms ease !important;
+  }
+
+  .upnext-card:hover .upnext-overlay,
+  .upnext-card:focus-visible .upnext-overlay {
+    opacity: 1;
+  }
+
+  .upnext-tab-label {
+    transition: none !important;
+  }
+}
+
+.footer-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.footer-link svg {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-link:hover svg,
+.footer-link:focus-visible svg {
+  transform: translate(3px, -3px);
+}
+
+.footer-link:focus-visible {
+  outline: 2px solid var(--utc-cobalt);
+  outline-offset: 4px;
+}
+
+.footer-meta {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* 45-degree chips off the bottom corners, like the cut on the logo's u. */
+.site-header {
+  --chip: 1.5rem;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--chip)),
+    calc(100% - var(--chip)) 100%,
+    var(--chip) 100%,
+    0 calc(100% - var(--chip))
+  );
+}
+
+.nav-list {
+  --nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-link {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--utc-ink);
+  transition: color 220ms ease;
+}
+
+.nav-link[data-pointed],
+.nav-link[aria-current="page"] {
+  color: var(--utc-cobalt);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid var(--utc-cobalt);
+  outline-offset: 6px;
+}
+
+.nav-arrow,
+.nav-line {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-arrow {
+  top: 50%;
+  display: flex;
+  font-size: 1.25rem;
+  color: var(--utc-cobalt);
+}
+
+/* Width is animated directly. A 1px bar stretched with scaleX came out about
+   9px too long at 175% display scaling, because the compositor rasterises the
+   1px at a whole number of device pixels before stretching it. */
+.nav-line {
+  top: 0;
+  height: 4px;
+  background: var(--utc-cobalt);
+}
+
+.nav-list[data-ready] .nav-arrow {
+  transition:
+    transform 420ms var(--nav-ease),
+    opacity 200ms ease;
+}
+
+/* The underscore trails the chevron slightly. */
+.nav-list[data-ready] .nav-line {
+  transition:
+    transform 480ms var(--nav-ease) 40ms,
+    width 480ms var(--nav-ease) 40ms,
+    opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-list[data-ready] .nav-arrow,
+  .nav-list[data-ready] .nav-line {
+    transition: opacity 160ms ease;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
