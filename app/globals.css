@@ -882,32 +882,6 @@ body:has(.startup-intro[data-playing]) .site-brand {
   animation: startup-wordmark-in 600ms ease 550ms both;
 }
 
-.startup-status {
-  position: absolute;
-  bottom: max(2rem, env(safe-area-inset-bottom));
-  left: clamp(1.5rem, 4vw, 3rem);
-  display: grid;
-  gap: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
-}
-
-.startup-progress {
-  width: 9rem;
-  height: 2px;
-  background: rgb(255 255 255 / 0.2);
-}
-
-.startup-progress::after {
-  content: "";
-  display: block;
-  height: 100%;
-  background: #ffffff;
-  transform-origin: left;
-  animation: startup-progress 1250ms cubic-bezier(0.65, 0, 0.35, 1) both;
-}
-
 @keyframes startup-piece-in {
   from { opacity: 0; transform: translateY(28px); clip-path: inset(100% 0 0); }
   to { opacity: 1; transform: none; clip-path: inset(0); }
@@ -926,11 +900,6 @@ body:has(.startup-intro[data-playing]) .site-brand {
 @keyframes startup-scan {
   from { transform: translateY(-100%); }
   to { transform: translateY(100%); }
-}
-
-@keyframes startup-progress {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -138,11 +138,6 @@ function StartupAnimation() {
         </div>
         <p className="startup-wordmark" data-intro-detail>UOWD TECH CLUB</p>
       </div>
-
-      <div className="startup-status" data-intro-detail aria-hidden>
-        <span>&gt;_ READY TO BUILD</span>
-        <div className="startup-progress" />
-      </div>
     </div>
   );
 }
