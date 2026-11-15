@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { getGridGeometry, GRID_BLOCK_SIZE as BLOCK_SIZE } from "./gridGeometry";
 
-const BLOCK_SIZE = 60;
 const HIGHLIGHT_DURATION = 300;
 
 type Block = {
@@ -66,19 +66,30 @@ export function InteractiveGrid({
     let expiryFrame = 0;
     let resizeFrame = 0;
     let scrollFrame = 0;
+    let previousLayout: { width: number; height: number; pageTop: number } | undefined;
 
     function build() {
-      container!.replaceChildren();
-      blocks = [];
-      activeBlocks.clear();
-
       const width = container!.clientWidth;
       const height = container!.clientHeight;
       const pageTop = container!.getBoundingClientRect().top + window.scrollY;
 
-      columnCount = Math.ceil(width / BLOCK_SIZE);
-      offsetX = (width - columnCount * BLOCK_SIZE) / 2;
-      offsetY = -(((pageTop % BLOCK_SIZE) + BLOCK_SIZE) % BLOCK_SIZE);
+      // Scroll-lock/overlay changes can notify the body observer without
+      // changing this grid. Keep the existing cells (and highlights) in place.
+      if (
+        previousLayout?.width === width &&
+        previousLayout.height === height &&
+        previousLayout.pageTop === pageTop
+      ) return;
+      previousLayout = { width, height, pageTop };
+
+      container!.replaceChildren();
+      blocks = [];
+      activeBlocks.clear();
+
+      const geometry = getGridGeometry(width, pageTop);
+      columnCount = geometry.columnCount;
+      offsetX = geometry.offsetX;
+      offsetY = geometry.offsetY;
       rowCount = Math.ceil((height - offsetY) / BLOCK_SIZE);
 
       const fragment = document.createDocumentFragment();

@@ -1,0 +1,146 @@
+#site-content.site-shell {
+  margin-right: 0;
+}
+
+.adaptive-scrollbar {
+  --scrollbar-ink: #ffffff;
+  --scrollbar-grip: var(--utc-cobalt);
+  position: fixed;
+  z-index: 90;
+  top: 16px;
+  right: 0;
+  bottom: 16px;
+  width: 20px;
+  background: transparent;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+}
+
+.adaptive-scrollbar[data-light-surface] {
+  --scrollbar-ink: var(--utc-cobalt);
+  --scrollbar-grip: #ffffff;
+}
+
+.adaptive-scrollbar[data-dragging] {
+  cursor: grabbing;
+}
+
+.adaptive-scrollbar[hidden] {
+  display: none;
+}
+
+.adaptive-scrollbar-rail {
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: var(--scrollbar-rail, rgb(255 255 255 / 0.6));
+  pointer-events: none;
+}
+
+.adaptive-scrollbar-cap {
+  position: absolute;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  pointer-events: none;
+}
+
+.adaptive-scrollbar-cap-top {
+  top: 0;
+  background: var(--scrollbar-top-ink, #ffffff);
+}
+
+.adaptive-scrollbar-cap-bottom {
+  bottom: 0;
+  background: var(--scrollbar-bottom-ink, #ffffff);
+}
+
+.adaptive-scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  right: 4px;
+  box-sizing: border-box;
+  width: 12px;
+  pointer-events: none;
+}
+
+.adaptive-scrollbar-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--scrollbar-outline, #000000);
+  clip-path: polygon(
+    3px 0, calc(100% - 3px) 0,
+    100% 3px, 100% calc(100% - 3px),
+    calc(100% - 3px) 100%, 3px 100%,
+    0 calc(100% - 3px), 0 3px
+  );
+}
+
+.adaptive-scrollbar-thumb-fill {
+  --cut: calc(3px - 0.5858px);
+  position: absolute;
+  inset: 1px;
+  background: var(--scrollbar-ink);
+  clip-path: polygon(
+    var(--cut) 0, calc(100% - var(--cut)) 0,
+    100% var(--cut), 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, var(--cut) 100%,
+    0 calc(100% - var(--cut)), 0 var(--cut)
+  );
+}
+
+.adaptive-scrollbar-thumb::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 5px);
+  left: 3px;
+  width: 6px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--scrollbar-grip);
+  box-shadow: 0 4px var(--scrollbar-grip), 0 8px var(--scrollbar-grip);
+}
+
+.adaptive-scrollbar:focus-visible {
+  outline: none;
+}
+
+.adaptive-scrollbar:focus-visible .adaptive-scrollbar-thumb {
+  outline: 2px solid var(--scrollbar-ink);
+  outline-offset: 3px;
+}
+
+body:has(.startup-intro[data-playing]) .adaptive-scrollbar {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body:has(.startup-intro[data-playing]) .adaptive-scrollbar {
+    visibility: visible;
+  }
+}
+
+@media print {
+  .adaptive-scrollbar {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .adaptive-scrollbar,
+  .adaptive-scrollbar[data-light-surface] {
+    --scrollbar-ink: CanvasText;
+    --scrollbar-grip: Canvas;
+    --scrollbar-outline: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .adaptive-scrollbar-rail,
+  .adaptive-scrollbar-cap {
+    background: CanvasText;
+  }
+
+}

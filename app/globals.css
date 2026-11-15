@@ -15,10 +15,26 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
+/* Hide the browser's page scrollbar from first paint, on both possible
+   scrolling elements. Scrolling itself stays enabled. */
+html,
+body {
+  scrollbar-width: none !important;
+  scrollbar-gutter: auto !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 body {
   background: var(--utc-cobalt);
   color: #ffffff;
   font-family: var(--font-body);
+  overflow-wrap: anywhere;
 }
 
 .hero-label {
@@ -181,7 +197,7 @@ body {
 }
 
 .interactive-grid .block.highlight {
-  border-color: var(--grid-highlight);
+  border-color: color-mix(in srgb, var(--grid-highlight) 35%, transparent);
 }
 
 /* Dissolve cells carry the previous section's look until they flip. */
@@ -191,7 +207,7 @@ body {
 }
 
 .interactive-grid .block.fill.highlight {
-  border-color: var(--dissolve-highlight);
+  border-color: color-mix(in srgb, var(--dissolve-highlight) 35%, transparent);
 }
 
 /* White sections: the same grid drawn in cobalt. */
@@ -431,7 +447,8 @@ body {
 
 .upnext-card {
   position: relative;
-  flex: 0 0 calc((100vw - 2.5rem - 4 * var(--gap)) / 4.25);
+  display: grid;
+  flex: 0 0 max(16rem, calc((100vw - 2.5rem - 4 * var(--gap)) / 4.25));
   aspect-ratio: 3 / 4;
   scroll-snap-align: start;
 }
@@ -439,8 +456,9 @@ body {
 /* The frame's bottom-right corner is cut parallel to the tab's slanted edge,
    so the border breaks around the tab with a thin gap, as in the sketch. */
 .upnext-frame {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  display: grid;
+  min-width: 0;
   overflow: hidden;
   border: 4px solid #ffffff;
   background: var(--utc-ink);
@@ -456,8 +474,7 @@ body {
 /* Hover: a translucent cobalt panel slides up over the poster, then the
    type and name slide in from the left. */
 .upnext-overlay {
-  position: absolute;
-  inset: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -641,24 +658,43 @@ body {
   text-transform: uppercase;
 }
 
+.footer-social-label {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.75rem 1.75rem 0.75rem 1rem;
+  background: var(--utc-cobalt);
+  color: #ffffff;
+  line-height: 1.4;
+  /* Match the cut-corner fact cards on the About page. */
+  clip-path: polygon(0 0, calc(100% - 1.25rem) 0, 100% 1.25rem, 100% 100%, 0 100%);
+}
+
+.footer-social-label[data-align="right"] {
+  padding: 0.75rem 1rem 0.75rem 1.75rem;
+  clip-path: polygon(1.25rem 0, 100% 0, 100% 100%, 0 100%, 0 1.25rem);
+}
+
 .footer-link {
   display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.75rem;
+  font-size: calc(1.75rem - 5px);
   line-height: 1.1;
   text-transform: uppercase;
 }
 
-.footer-link svg {
-  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+.footer-link-label {
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
 }
 
-.footer-link:hover svg,
-.footer-link:focus-visible svg {
-  transform: translate(3px, -3px);
+.footer-link:hover .footer-link-label,
+.footer-link:focus-visible .footer-link-label {
+  text-decoration-line: underline;
 }
 
 .footer-link:focus-visible {
@@ -667,6 +703,8 @@ body {
 }
 
 .footer-meta {
+  border-top: 3px solid var(--utc-cobalt);
+  padding-top: 0.75rem;
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: 0.875rem;
@@ -674,9 +712,245 @@ body {
   text-transform: uppercase;
 }
 
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.circle-cursor {
+  --cursor-colour: #ffffff;
+  --cursor-x: -100px;
+  --cursor-y: -100px;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.circle-cursor[data-light-surface] {
+  --cursor-colour: var(--utc-cobalt);
+}
+
+.circle-cursor-dot,
+.circle-cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.circle-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--cursor-colour);
+  transform: translate3d(calc(var(--cursor-x) - 3px), calc(var(--cursor-y) - 3px), 0);
+}
+
+.circle-cursor-ring {
+  --cursor-scale: 1;
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--cursor-colour);
+  transform: translate3d(calc(var(--cursor-x) - 22px), calc(var(--cursor-y) - 22px), 0) scale(var(--cursor-scale));
+  transition: transform 200ms ease;
+}
+
+.circle-cursor[data-hovered] .circle-cursor-ring {
+  --cursor-scale: 1.5;
+}
+
+.circle-cursor[data-pressed] .circle-cursor-ring {
+  --cursor-scale: 0.75;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html[data-circle-cursor],
+  html[data-circle-cursor] * {
+    cursor: none !important;
+  }
+
+  .circle-cursor[data-visible] {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .circle-cursor-ring {
+    transition: none;
+  }
+}
+
+/* Full-screen brand boot-up. The real navbar mark keeps its layout space but
+   stays hidden until the flying copy lands exactly on top of it. */
+body:has(.startup-intro[data-playing]) {
+  overflow: hidden;
+}
+
+body:has(.startup-intro[data-playing]) .site-shell {
+  pointer-events: none;
+}
+
+body:has(.startup-intro[data-playing]) .site-brand {
+  visibility: hidden;
+}
+
+.startup-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  place-items: center;
+  isolation: isolate;
+  color: #ffffff;
+}
+
+.startup-intro[data-playing] {
+  display: grid;
+}
+
+.startup-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--utc-cobalt);
+}
+
+.startup-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 40%, rgb(255 255 255 / 0.1) 50%, transparent 60%);
+  animation: startup-scan 1400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.startup-frame {
+  position: absolute;
+  width: min(82vw, 44rem);
+  height: min(56vw, 24rem);
+  background:
+    linear-gradient(#ffffff, #ffffff) left top / 24px 2px,
+    linear-gradient(#ffffff, #ffffff) left top / 2px 24px,
+    linear-gradient(#ffffff, #ffffff) right top / 24px 2px,
+    linear-gradient(#ffffff, #ffffff) right top / 2px 24px,
+    linear-gradient(#ffffff, #ffffff) left bottom / 24px 2px,
+    linear-gradient(#ffffff, #ffffff) left bottom / 2px 24px,
+    linear-gradient(#ffffff, #ffffff) right bottom / 24px 2px,
+    linear-gradient(#ffffff, #ffffff) right bottom / 2px 24px;
+  background-repeat: no-repeat;
+  animation: startup-frame-in 1000ms ease both;
+}
+
+.startup-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.startup-mark {
+  width: min(64vw, 32rem);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.startup-mark-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.startup-mark-svg > * {
+  animation: startup-piece-in 650ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.startup-mark-svg > :nth-child(2) { animation-delay: 90ms; }
+.startup-mark-svg > :nth-child(3) { animation-delay: 180ms; }
+.startup-mark-svg > :nth-child(4) { animation-delay: 270ms; }
+.startup-mark-svg > :nth-child(5) { animation-delay: 360ms; }
+
+.startup-wordmark {
+  font-family: var(--font-body);
+  font-size: clamp(0.75rem, 2.4vw, 1.5rem);
+  letter-spacing: 0.22em;
+  text-align: center;
+  animation: startup-wordmark-in 600ms ease 550ms both;
+}
+
+.startup-status {
+  position: absolute;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  left: clamp(1.5rem, 4vw, 3rem);
+  display: grid;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+}
+
+.startup-progress {
+  width: 9rem;
+  height: 2px;
+  background: rgb(255 255 255 / 0.2);
+}
+
+.startup-progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  background: #ffffff;
+  transform-origin: left;
+  animation: startup-progress 1250ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes startup-piece-in {
+  from { opacity: 0; transform: translateY(28px); clip-path: inset(100% 0 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0); }
+}
+
+@keyframes startup-wordmark-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes startup-frame-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes startup-scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes startup-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .startup-intro[data-playing] { display: none; }
+  body:has(.startup-intro[data-playing]) { overflow: auto; }
+  body:has(.startup-intro[data-playing]) .site-shell { pointer-events: auto; }
+  body:has(.startup-intro[data-playing]) .site-brand { visibility: visible; }
+  .startup-intro *, .startup-intro *::before, .startup-intro *::after {
+    animation: none;
+  }
+}
+
 /* 45-degree chips off the bottom corners, like the cut on the logo's u. */
 .site-header {
-  --chip: 1.5rem;
+  --chip: 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 80;
+  transform: translateY(0);
+  transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
   clip-path: polygon(
     0 0,
     100% 0,
@@ -687,15 +961,62 @@ body {
   );
 }
 
+.site-header[data-scroll-hidden]:not(:focus-within) {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
+  }
+}
+
 .nav-list {
   --nav-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Keep every navigation label reachable on both routes, not just About. */
+@media (max-width: 900px) {
+  .site-header {
+    gap: 1.5rem;
+    padding-inline: 1.25rem;
+  }
+
+  .site-brand {
+    flex-shrink: 0;
+  }
+
+  .site-header nav {
+    min-width: 0;
+    overflow-x: auto;
+    padding: 1rem 0.25rem 1rem 1.5rem;
+  }
+
+  .nav-list {
+    width: max-content;
+    gap: 1.5rem;
+    padding-right: 0.75rem;
+  }
+
+  .about {
+    padding-inline: 1.5rem;
+  }
+
+  .about-heading {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+  }
+
+  .about-pillar-title {
+    flex-wrap: wrap;
+  }
 }
 
 .nav-link {
   display: block;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -724,7 +1045,7 @@ body {
 .nav-arrow {
   top: 50%;
   display: flex;
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: var(--utc-cobalt);
 }
 
@@ -733,7 +1054,7 @@ body {
    1px at a whole number of device pixels before stretching it. */
 .nav-line {
   top: 0;
-  height: 4px;
+  height: 3px;
   background: var(--utc-cobalt);
 }
 
@@ -757,17 +1078,3 @@ body {
     transition: opacity 160ms ease;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

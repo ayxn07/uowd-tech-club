@@ -1,0 +1,76 @@
+// Summarised from The Document (1).docx. Logo assets retain the document's
+// original pixels, crop rectangles and circular masks (see provenance.json).
+export const HISTORY_CHAPTERS = [
+  {
+    id: "2022-2023",
+    year: "2022 – 2023",
+    title: "The beginning.",
+    summary: "Officially established on 19 September 2022, a small student idea became UOWD Tech Club: a place to explore technology, learn together and build something of our own.",
+    highlights: [
+      "Our first coding workshops covered Git, Python and the command line.",
+      "DEDSEC CTF brought UOWD and RIT together for a cybersecurity challenge.",
+      "Media and Events teams formed in Winter 2023, giving the community its first structure.",
+    ],
+    membership: "~10 students",
+    membershipNote: "Estimated membership",
+    milestone: "An idea becomes a community",
+    logo: { src: "/images/about/history/utc-logo-2022-2023.png", width: 247, height: 133 },
+  },
+  {
+    id: "2023-2024",
+    year: "2023 – 2024",
+    title: "Finding our structure.",
+    summary: "A new leadership team took shape as the founders graduated. Secretary and operations roles brought more structure, while collaborations opened up new ways to learn.",
+    highlights: [
+      "Membership grew to 20–30 students as the new team found its footing.",
+      "Figma and Machine Learning workshops connected creative and technical skills.",
+      "The Egg Drop Challenge and ICP event brought Engineers Australia and the Finance Society into the story.",
+    ],
+    membership: "20–30 students",
+    membershipNote: "Recorded membership",
+    milestone: "New leadership. New possibilities.",
+    logo: { src: "/images/about/history/utc-logo-2023-2024.png", width: 181, height: 179 },
+  },
+  {
+    id: "2024-2025",
+    year: "2024 – 2025",
+    title: "Building momentum.",
+    summary: "Specialist AI, WebDev and Engineering teams helped turn curiosity into hands-on projects. With 50 members, the club grew into a community recognised as Club of the Year.",
+    highlights: [
+      "The React Foundation Series took students from the basics to launching a portfolio.",
+      "The AI Challenge united UOWD Alumni and Dubai Police for a panel and four-hour hackathon.",
+      "Robotics, 3D printing and industry trips expanded what we could build and explore.",
+    ],
+    membership: "50 students",
+    membershipNote: "Recorded membership",
+    milestone: "Club of the Year / 2024–25",
+    logo: { src: "/images/about/history/utc-logo-2024-2025.png", width: 176, height: 175 },
+  },
+  {
+    id: "2025-2026",
+    year: "2025 – 2026",
+    title: "New chapters. New recognition.",
+    summary: "Under the School of Computer Science, the club reached 60 students. Cybersecurity and research roles joined the team, and WebDev became Programming in Spring 2026.",
+    highlights: [
+      "AI app workshops, agentic AI and the MCP Build Series moved ideas into working projects.",
+      "Our first UOWD Capture the Flag partnered with DEF-X and HackTheBox.",
+      "The year earned the Best Event Award and Innovation in Student Engagement Award.",
+    ],
+    membership: "60 students",
+    membershipNote: "Recorded membership",
+    milestone: "Best Event + Student Engagement",
+    logo: { src: "/images/about/history/utc-logo-2025-2026.png", width: 203, height: 202 },
+  },
+  {
+    // The supplied current logo is ready; copy will be provided separately.
+    id: "2026-present",
+    year: "2026 – PRESENT",
+    title: "",
+    summary: "",
+    highlights: [],
+    membership: "",
+    membershipNote: "",
+    milestone: "",
+    logo: { src: "/images/about/history/utc-logo-2026-present.png", width: 1254, height: 1254 },
+  },
+] as const;

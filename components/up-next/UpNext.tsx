@@ -77,7 +77,7 @@ export function UpNext() {
       <InteractiveGrid dissolveRows={5} />
 
       <RevealOnScroll className="upnext relative flex min-h-svh flex-col pt-36 pb-16">
-        <div className="flex items-end justify-between px-10">
+        <div className="flex flex-wrap items-end justify-between gap-6 px-10">
           <div className="upnext-head">
             <p className="hero-label">&gt;_ UPCOMING</p>
             <h2 id="upnext-heading" className="about-heading mt-6">
@@ -121,7 +121,7 @@ export function UpNext() {
                   src={`/images/events/${event.slug}.png`}
                   alt=""
                   fill
-                  sizes="25vw"
+                  sizes="(max-width: 1100px) 16rem, 25vw"
                   className="object-cover"
                 />
                 <div className="upnext-overlay">

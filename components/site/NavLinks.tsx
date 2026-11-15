@@ -10,7 +10,6 @@ const LINKS = [
   { href: "/about", label: "About" },
   { href: "/teams", label: "Teams" },
   { href: "/events", label: "Events" },
-  { href: "/timeline", label: "Timeline" },
   { href: "/news", label: "News" },
   { href: "/gallery", label: "Gallery" },
 ];
@@ -91,7 +90,7 @@ export function NavLinks({ activeHref }: { activeHref: string | null }) {
   return (
     <ul
       ref={listRef}
-      className="nav-list relative flex items-center gap-11"
+      className="nav-list relative flex items-center gap-9"
       onMouseLeave={() => setHoveredHref(null)}
     >
       <span ref={arrowRef} className="nav-arrow" aria-hidden>

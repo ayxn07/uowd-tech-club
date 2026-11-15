@@ -1,0 +1,36 @@
+.directional-cursor {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 10000;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.directional-cursor__shape {
+  position: absolute;
+  left: -18px;
+  top: -4px;
+  display: block;
+  width: 36px;
+  height: 39px;
+  background: url("/utc-cursor.svg") center / contain no-repeat;
+  transform-origin: 18px 4px;
+  /* The white outline separates cobalt-on-cobalt; the ink edge separates
+     white-on-white and keeps the arrow readable across detailed photos. */
+  filter: drop-shadow(0 0 1px var(--utc-ink)) drop-shadow(0 2px 2px rgb(16 20 24 / 0.3));
+  will-change: transform;
+}
+
+@media (any-hover: hover) and (any-pointer: fine) {
+  html[data-directional-cursor],
+  html[data-directional-cursor] * {
+    cursor: none !important;
+  }
+
+  .directional-cursor[data-visible] {
+    opacity: 1;
+  }
+}

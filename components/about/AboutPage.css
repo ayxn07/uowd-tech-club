@@ -1,0 +1,849 @@
+/* Scoped plain CSS keeps this page separate from the home-page About preview. */
+.utc-about-page {
+  position: relative;
+  isolation: isolate;
+  background: var(--utc-cobalt);
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+/* One uninterrupted grid sits behind both semantic content sections. */
+.utc-about-page > .interactive-grid {
+  z-index: -1;
+}
+
+.utc-about-page *,
+.utc-about-page *::before,
+.utc-about-page *::after {
+  box-sizing: border-box;
+}
+
+/* Grid/flex children must be able to shrink before their text wraps. */
+.utc-about-intro-layout > *,
+.utc-about-history-heading > *,
+.utc-archive-month-title,
+.utc-archive-event-panel > * {
+  min-width: 0;
+}
+
+.utc-about-container {
+  position: relative;
+  width: min(100% - clamp(2.5rem, 10vw, 12rem), 88rem);
+  margin-inline: auto;
+}
+
+.utc-about-intro,
+.utc-about-history {
+  position: relative;
+}
+
+.utc-about-intro {
+  display: grid;
+  align-items: center;
+  min-height: calc(100svh - 3.75rem);
+  padding-block: clamp(5rem, 8vw, 8rem);
+}
+
+.utc-about-intro-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.utc-about-intro-copy {
+  display: grid;
+  gap: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.utc-about-intro-copy > .utc-about-eyebrow,
+.utc-about-intro-copy > .utc-about-lead {
+  margin: 0;
+}
+
+.utc-about-eyebrow,
+.utc-about-fact dt,
+.utc-about-founders,
+.utc-archive-kicker,
+.utc-archive-control-group legend,
+.utc-archive-options,
+.utc-archive-month-select,
+.utc-archive-table th,
+.utc-archive-event-date,
+.utc-archive-event-tags,
+.utc-archive-same-day legend {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.utc-about-eyebrow {
+  margin: 0 0 1.75rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+}
+
+.utc-about-title,
+.utc-about-history-heading h2,
+.utc-about-fact dd,
+.utc-archive-month-title h3,
+.utc-archive-event-panel h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.utc-about-title {
+  margin: 0;
+  font-size: clamp(3rem, 4.4vw, 5rem);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+}
+
+.utc-about-title > span {
+  display: block;
+}
+
+.utc-about-title > span + span {
+  margin-top: 0.2em;
+}
+
+.utc-about-lead {
+  max-width: 34rem;
+  margin: 2rem 0 0;
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.7;
+}
+
+.utc-about-founders {
+  max-width: 32rem;
+  margin: 1.25rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.8;
+  color: rgb(255 255 255 / 0.75);
+}
+
+.utc-about-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+}
+
+.utc-about-fact {
+  min-width: 0;
+  padding: clamp(1.25rem, 2.4vw, 2.5rem);
+  background: #ffffff;
+  color: var(--utc-cobalt);
+  clip-path: polygon(0 0, calc(100% - 1.25rem) 0, 100% 1.25rem, 100% 100%, 0 100%);
+}
+
+.utc-about-fact dt {
+  font-size: 0.6875rem;
+  line-height: 1.6;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.utc-about-fact dd {
+  margin: 0.75rem 0 0;
+  font-size: clamp(3rem, 4.8vw, 5.25rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.utc-about-fact dd > span {
+  display: block;
+  margin: 1rem 0 0;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.utc-about-fact-award {
+  grid-column: 1 / -1;
+  container-type: inline-size;
+}
+
+.utc-about-fact-award dd {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.3fr);
+  column-gap: 1rem;
+  font-size: clamp(2.5rem, 11cqi, 4.75rem);
+}
+
+.utc-about-fact-award dd > span {
+  grid-column: 1;
+}
+
+.utc-about-award-trophy {
+  display: block;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  justify-self: end;
+  width: 100%;
+  max-width: 9rem;
+  height: auto;
+  color: var(--utc-cobalt);
+  transform: translateY(-0.875rem);
+}
+
+/* Keep the illustration in flow, never over the year or caption. */
+@container (max-width: 24rem) {
+  .utc-about-fact-award dd {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .utc-about-award-trophy {
+    grid-column: 1;
+    grid-row: 3;
+    width: 5.5rem;
+    margin-top: 1rem;
+    transform: none;
+  }
+}
+
+.utc-about-history {
+  scroll-margin-top: 2rem;
+  padding-block: clamp(5rem, 8vw, 8rem) clamp(4rem, 7vw, 7rem);
+}
+
+.utc-about-history-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: clamp(2.5rem, 4vw, 4rem);
+}
+
+.utc-about-history-heading h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 4.5vw, 4.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.utc-about-history-heading > p {
+  max-width: 22rem;
+  margin: 0 0 0.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: rgb(255 255 255 / 0.8);
+}
+
+.utc-archive {
+  border: 1px solid #ffffff;
+  padding: clamp(1rem, 2.5vw, 2.5rem);
+  background: #ffffff;
+  color: var(--utc-ink);
+}
+
+.utc-archive button,
+.utc-archive select {
+  cursor: pointer;
+}
+
+.utc-about-page a:focus-visible,
+.utc-archive button:focus-visible,
+.utc-archive select:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 4px;
+}
+
+.utc-archive-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.5rem 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgb(16 66 214 / 0.18);
+}
+
+.utc-archive-control-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.utc-archive-control-group legend {
+  margin-bottom: 0.75rem;
+  color: var(--utc-cobalt);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.utc-archive-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+}
+
+.utc-archive-options button {
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgb(16 66 214 / 0.35);
+  padding: 0.625rem 0.875rem;
+  background: #ffffff;
+  color: var(--utc-cobalt);
+  transition: background-color 150ms ease;
+}
+
+.utc-archive-options button:hover {
+  background: rgb(16 66 214 / 0.07);
+}
+
+.utc-archive-options button[aria-pressed="true"] {
+  border-color: var(--utc-cobalt);
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-archive-view {
+  margin-left: auto;
+}
+
+.utc-archive-kicker {
+  margin: 0;
+  font-size: 0.625rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--utc-cobalt);
+}
+
+.utc-archive-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  padding-top: 2rem;
+}
+
+.utc-archive-calendar {
+  min-width: 0;
+}
+
+.utc-archive-month-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.utc-archive-month-title h3 {
+  margin: 0.25rem 0 0;
+  font-size: clamp(1.5rem, 2.1vw, 2rem);
+  line-height: 1.25;
+}
+
+.utc-archive-month-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.utc-archive-month-buttons {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+}
+
+.utc-archive-month-buttons button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgb(16 66 214 / 0.35);
+  background: #ffffff;
+  color: var(--utc-cobalt);
+  font-size: 1.25rem;
+}
+
+.utc-archive-month-buttons button:hover:not(:disabled) {
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-archive-month-buttons button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.utc-archive-month-select {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  margin: 0;
+  font-size: 0.625rem;
+  color: var(--utc-cobalt);
+}
+
+.utc-archive-month-select select {
+  max-width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid rgb(16 66 214 / 0.3);
+  padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+  background: #ffffff;
+  color: var(--utc-ink);
+  font: inherit;
+}
+
+.utc-archive-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.utc-archive-table th {
+  height: 2.5rem;
+  background: rgb(16 66 214 / 0.08);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  color: var(--utc-cobalt);
+}
+
+.utc-archive-table th,
+.utc-archive-table td {
+  border: 1px solid rgb(16 66 214 / 0.22);
+}
+
+.utc-archive-table td {
+  height: 6.25rem;
+  padding: 0;
+  vertical-align: top;
+}
+
+.utc-archive-table td[data-outside] {
+  background: rgb(16 66 214 / 0.025);
+  color: rgb(16 20 24 / 0.3);
+}
+
+.utc-archive-day {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 6.25rem;
+  border: 0;
+  padding: 0.625rem 0.375rem;
+  background: transparent;
+  color: var(--utc-cobalt);
+  text-align: left;
+}
+
+.utc-archive-day:hover {
+  background: rgb(16 66 214 / 0.07);
+}
+
+.utc-archive-day:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline-offset: -3px;
+}
+
+.utc-archive-day time,
+.utc-archive-empty-day time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.utc-archive-empty-day {
+  display: block;
+  padding: 0.625rem 0.375rem;
+}
+
+.utc-archive-day-events {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.25rem;
+  width: 100%;
+  font-size: 0.5625rem;
+  line-height: 1.4;
+}
+
+.utc-archive-event-chip {
+  display: block;
+  padding: 0.25rem;
+  background: rgb(16 66 214 / 0.09);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.utc-archive-table td[data-selected] {
+  background: var(--utc-cobalt);
+}
+
+.utc-archive-table td[data-selected] .utc-archive-day {
+  color: #ffffff;
+}
+
+.utc-archive-table td[data-selected] .utc-archive-event-chip {
+  background: #ffffff;
+  color: var(--utc-cobalt);
+}
+
+.utc-archive-day-dot {
+  display: none;
+}
+
+.utc-archive-list-view {
+  min-height: 24rem;
+}
+
+.utc-archive-list-view ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.utc-archive-list-view li + li {
+  margin-top: 0.625rem;
+}
+
+.utc-archive-list-view button {
+  display: grid;
+  gap: 0.5rem;
+  width: 100%;
+  border: 1px solid rgb(16 66 214 / 0.25);
+  padding: 1.25rem;
+  background: #ffffff;
+  color: var(--utc-cobalt);
+  text-align: left;
+}
+
+.utc-archive-list-view time,
+.utc-archive-list-view button > span {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+.utc-archive-list-view strong {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.utc-archive-list-view button > span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.utc-archive-list-view button:hover {
+  background: rgb(16 66 214 / 0.05);
+}
+
+.utc-archive-list-view button[aria-pressed="true"] {
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-archive-event-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: clamp(1.25rem, 2vw, 2rem);
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-archive-event-header {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.utc-archive-event-date {
+  margin: 0;
+  font-size: 0.6875rem;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.utc-archive-event-panel h3 {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.utc-archive-event-description {
+  margin: 1.25rem 0 0;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.utc-archive-event-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  min-width: 0;
+  gap: 0.5rem;
+  font-size: 0.5625rem;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.utc-archive-event-tags > span {
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid rgb(255 255 255 / 0.5);
+  padding: 0.5rem 0.75rem;
+}
+
+.utc-archive-community-image {
+  margin: 2rem 0 0;
+}
+
+.utc-archive-community-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgb(255 255 255 / 0.6);
+}
+
+/* Only single-event dates use the taller image to occupy the spare card space.
+   Multi-event cards retain their landscape image and same-day controls. */
+.utc-archive-event-panel[data-single-event] {
+  gap: 2rem;
+}
+
+.utc-archive-community-image[data-portrait] {
+  position: relative;
+  flex: 1;
+  min-height: 20rem;
+  margin: 0;
+}
+
+.utc-archive-community-image[data-portrait] img {
+  object-fit: cover;
+}
+
+.utc-archive-same-day {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+  margin: 1.5rem 0 0;
+  border: 0;
+  padding: 0;
+}
+
+.utc-archive-same-day legend {
+  margin-bottom: 0.75rem;
+  font-size: 0.625rem;
+}
+
+.utc-archive-same-day button {
+  min-height: 2.75rem;
+  border: 1px solid rgb(255 255 255 / 0.5);
+  padding: 0.75rem;
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.utc-archive-same-day button[aria-pressed="true"] {
+  background: #ffffff;
+  color: var(--utc-cobalt);
+}
+
+@media (max-width: 1050px) {
+  .utc-about-intro-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+
+  .utc-about-title {
+    font-size: clamp(3rem, 7vw, 5rem);
+  }
+
+  .utc-about-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .utc-about-fact-award {
+    grid-column: auto;
+  }
+
+  .utc-about-fact:not(.utc-about-fact-award) dd {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .utc-archive-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .utc-archive-event-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+    align-items: start;
+    gap: 1.5rem 2rem;
+  }
+
+  .utc-archive-community-image {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+
+  .utc-archive-community-image[data-portrait] {
+    grid-row: 1;
+    min-height: 0;
+    aspect-ratio: 2 / 3;
+  }
+
+  .utc-archive-event-panel h3 {
+    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+
+  .utc-archive-same-day {
+    grid-column: 1;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .utc-about-history-heading {
+    display: block;
+  }
+
+  .utc-about-history-heading > p {
+    max-width: 30rem;
+    margin-top: 1.5rem;
+  }
+
+  .utc-archive-controls {
+    gap: 1.5rem;
+  }
+
+  .utc-archive-years {
+    flex-basis: 100%;
+  }
+
+}
+
+@media (max-width: 600px) {
+  .utc-about-intro {
+    padding-block: 4rem;
+  }
+
+  .utc-about-title {
+    font-size: clamp(2.5rem, 9vw, 3.5rem);
+  }
+
+  .utc-about-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .utc-about-fact-award {
+    grid-column: 1 / -1;
+  }
+
+  .utc-about-fact {
+    padding: 1.25rem;
+  }
+
+  .utc-about-fact dd > span {
+    font-size: 0.75rem;
+  }
+
+  .utc-archive-view {
+    margin-left: 0;
+  }
+
+  .utc-archive-options {
+    font-size: 0.625rem;
+  }
+
+  .utc-archive-options button {
+    padding-inline: 0.625rem;
+  }
+
+  .utc-archive-month-nav {
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+
+  .utc-archive-month-title h3 {
+    font-size: 1.25rem;
+  }
+
+  .utc-archive-month-buttons {
+    gap: 0.25rem;
+  }
+
+  .utc-archive-table th {
+    font-size: 0.5rem;
+  }
+
+  .utc-archive-table td {
+    height: 3.75rem;
+  }
+
+  .utc-archive-day {
+    min-height: 3.75rem;
+    align-items: center;
+    padding-inline: 0.125rem;
+  }
+
+  .utc-archive-empty-day {
+    padding-inline: 0.125rem;
+    text-align: center;
+  }
+
+  .utc-archive-day-events {
+    display: none;
+  }
+
+  .utc-archive-day-dot {
+    display: block;
+    width: 4px;
+    height: 4px;
+    margin-top: 0.25rem;
+    background: currentColor;
+  }
+
+  .utc-archive-event-panel {
+    display: flex;
+    gap: 0;
+  }
+
+  .utc-archive-community-image,
+  .utc-archive-same-day {
+    margin-top: 1.5rem;
+  }
+
+  .utc-archive-community-image[data-portrait] {
+    flex: none;
+    width: 100%;
+    margin: 0;
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .utc-archive-options button {
+    transition: none;
+  }
+}

@@ -1,0 +1,23 @@
+.site-header {
+  --header-outline: 1px;
+}
+
+/* A continuous inset cobalt stroke along both cuts and the bottom edge.
+   The diagonal offset keeps the stroke the same thickness as the baseline. */
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--utc-cobalt);
+  clip-path: polygon(
+    0 calc(100% - var(--chip)),
+    var(--chip) 100%,
+    calc(100% - var(--chip)) 100%,
+    100% calc(100% - var(--chip)),
+    100% calc(100% - var(--chip) - var(--header-outline) * 1.41421356),
+    calc(100% - var(--chip) - var(--header-outline) * 0.41421356) calc(100% - var(--header-outline)),
+    calc(var(--chip) + var(--header-outline) * 0.41421356) calc(100% - var(--header-outline)),
+    0 calc(100% - var(--chip) - var(--header-outline) * 1.41421356)
+  );
+}

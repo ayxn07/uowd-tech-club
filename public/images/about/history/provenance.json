@@ -1,0 +1,65 @@
+{
+  "document": "The Document (1).docx",
+  "processing": "Original embedded pixels, Word srcRect crop and shape mask; no regeneration or upscaling.",
+  "logos": [
+    {
+      "year": "2022-2023",
+      "filename": "utc-logo-2022-2023.png",
+      "width": 247,
+      "height": 133,
+      "source": "word/media/image1.png",
+      "sourceSha256": "6d3f7264f12806723d7c83a2648c48bdfc29ff94bd04a803f32ccb8793c8e906",
+      "documentCrop": {
+        "l": 0.09462,
+        "r": 0.02222,
+        "b": 0.26222
+      },
+      "documentShape": "rect"
+    },
+    {
+      "year": "2023-2024",
+      "filename": "utc-logo-2023-2024.png",
+      "width": 181,
+      "height": 179,
+      "source": "word/media/image2.jpeg",
+      "sourceSha256": "4288fda1811f055e37c421a84d9bc844284c0858c9eb825af52ae0f97b209e81",
+      "documentCrop": {
+        "l": 0.03659,
+        "t": 0.06838,
+        "r": 0.07927,
+        "b": 0.10826
+      },
+      "documentShape": "ellipse"
+    },
+    {
+      "year": "2024-2025",
+      "filename": "utc-logo-2024-2025.png",
+      "width": 176,
+      "height": 175,
+      "source": "word/media/image3.jpeg",
+      "sourceSha256": "a4981b59a270b30562f2806e396fd4bf50e8b3039619b1851f432071f1759216",
+      "documentCrop": {
+        "l": 0.03659,
+        "t": 0.06838,
+        "r": 0.07927,
+        "b": 0.10826
+      },
+      "documentShape": "ellipse"
+    },
+    {
+      "year": "2025-2026",
+      "filename": "utc-logo-2025-2026.png",
+      "width": 203,
+      "height": 202,
+      "source": "word/media/image4.jpeg",
+      "sourceSha256": "96bcc8f06bc2ca98029ce66cecfbeb9d0cb7ee1df5c3ee0a095c3769dc66bc58",
+      "documentCrop": {
+        "l": 0.03622,
+        "t": 0.04959,
+        "r": 0.09133,
+        "b": -0.00496
+      },
+      "documentShape": "ellipse"
+    }
+  ]
+}

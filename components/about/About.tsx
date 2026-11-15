@@ -28,8 +28,8 @@ export function About() {
     >
       <InteractiveGrid dissolveRows={5} />
 
-      <RevealOnScroll className="about relative flex min-h-svh flex-col px-10 pt-24 pb-16">
-        <div className="grid flex-1 grid-cols-2 items-center gap-10">
+      <RevealOnScroll className="about relative flex min-h-svh flex-col px-10 pt-48 pb-16">
+        <div className="grid min-w-0 flex-1 grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div className="about-copy">
             <p className="hero-label">&gt;_ ABOUT UTC</p>
             <h2 id="about-heading" className="about-heading mt-6">
@@ -63,11 +63,11 @@ export function About() {
           </div>
         </div>
 
-        <div className="about-pillars mt-14 grid grid-cols-3 border-4 border-cobalt">
+        <div className="about-pillars mt-14 grid grid-cols-1 border-4 border-cobalt xl:grid-cols-3">
           {PILLARS.map((pillar, index) => (
             <div
               key={pillar.number}
-              className={`px-10 py-8 ${index === 0 ? "" : "border-l-4 border-cobalt"}`}
+              className={`min-w-0 px-6 py-8 sm:px-10 ${index === 0 ? "" : "border-t-4 border-cobalt xl:border-t-0 xl:border-l-4"}`}
             >
               <h3 className="about-pillar-title">
                 <span className="about-pillar-number">{pillar.number}</span>

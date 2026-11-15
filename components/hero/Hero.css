@@ -1,0 +1,299 @@
+/* Use prefixed plain CSS, like the rest of this project. Its Turbopack CSS
+   loader currently treats .module.css imports as global styles, not mappings. */
+.utc-workspace-hero {
+  --workspace-heading-size: clamp(2.5rem, min(5.6vw, 11svh), 6.25rem);
+  position: relative;
+  isolation: isolate;
+  min-height: max(36rem, calc(100svh - 3.75rem));
+  overflow: hidden;
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-workspace-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  align-items: center;
+  gap: clamp(1.5rem, 3.1vw, 4rem);
+  min-height: inherit;
+  padding: clamp(2rem, 5svh, 4.5rem) clamp(1.5rem, 5.5vw, 6.5rem);
+}
+
+.utc-workspace-copy {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* Overlapping layers reserve the tallest copy's space. Only opacity changes;
+   the grid, typography, window frame and decorative elements stay still. */
+.utc-workspace-label,
+.utc-workspace-heading,
+.utc-workspace-description {
+  display: grid;
+}
+
+.utc-workspace-fade,
+.utc-workspace-image {
+  opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.utc-workspace-fade {
+  grid-area: 1 / 1;
+}
+
+.utc-workspace-fade[data-active],
+.utc-workspace-image[data-active] {
+  opacity: 1;
+}
+
+.utc-workspace-label {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-mono);
+  font-size: clamp(0.875rem, 1.6vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+}
+
+.utc-workspace-heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--workspace-heading-size);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+.utc-workspace-heading-line {
+  display: block;
+}
+
+.utc-workspace-details {
+  min-height: 7em;
+  margin: 1.5rem 0 0;
+  font-size: clamp(1rem, 1.3vw, 1.25rem);
+  line-height: 1.4;
+}
+
+.utc-workspace-description {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.utc-workspace-progress {
+  width: 9rem;
+  max-width: 100%;
+  height: 3px;
+  margin-top: 1.2rem;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.25);
+}
+
+.utc-workspace-progress-fill {
+  height: 100%;
+  background: #ffffff;
+  transform-origin: left;
+  animation: utc-workspace-countdown linear forwards;
+}
+
+@keyframes utc-workspace-countdown {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .utc-workspace-fade,
+  .utc-workspace-image {
+    transition: none;
+  }
+
+  .utc-workspace-progress-fill {
+    animation-timing-function: steps(5, end);
+  }
+}
+
+.utc-workspace-visual {
+  --workspace-cut: clamp(2.5rem, 4vw, 4.25rem);
+  position: relative;
+  top: -1rem;
+  isolation: isolate;
+  width: 90%;
+  justify-self: center;
+  aspect-ratio: 1.48;
+}
+
+.utc-workspace-offset-frame {
+  position: absolute;
+  z-index: -1;
+  inset: 16% -4.5% -7% 6%;
+  border: 3px solid #ffffff;
+  pointer-events: none;
+}
+
+.utc-workspace-window {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  background: #ffffff;
+  clip-path: polygon(
+    0 0, calc(100% - var(--workspace-cut)) 0,
+    100% var(--workspace-cut), 100% 100%, 0 100%
+  );
+}
+
+.utc-workspace-titlebar {
+  display: flex;
+  flex: 0 0 3rem;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.75rem);
+  padding: 0 calc(var(--workspace-cut) + 0.5rem) 0 1rem;
+  color: var(--utc-ink);
+  font-family: var(--font-mono);
+  font-size: clamp(0.875rem, 1.3vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.utc-workspace-window-dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.6rem;
+}
+
+.utc-workspace-window-dots i {
+  width: clamp(0.5rem, 0.8vw, 0.875rem);
+  height: clamp(0.5rem, 0.8vw, 0.875rem);
+  background: var(--utc-cobalt);
+}
+
+.utc-workspace-photo-frame {
+  --photo-cut: max(0px, calc(var(--workspace-cut) - 3rem - 2px));
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--utc-ink);
+  clip-path: polygon(
+    0 0, calc(100% - var(--photo-cut)) 0,
+    100% var(--photo-cut), 100% 100%, 0 100%
+  );
+}
+
+.utc-workspace-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.utc-workspace-code-note {
+  position: absolute;
+  right: 5.5%;
+  bottom: -13.5%;
+  width: 44%;
+  margin: 0;
+  padding: clamp(0.75rem, 1.5vw, 1.5rem);
+  background: #ffffff;
+  color: var(--utc-ink);
+  clip-path: polygon(0 0, calc(100% - 1.5rem) 0, 100% 1.5rem, 100% 100%, 0 100%);
+  font-family: var(--font-mono);
+  font-size: clamp(0.625rem, 1.3vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.utc-workspace-cursor {
+  position: absolute;
+  bottom: -14%;
+  left: 31%;
+  width: clamp(1.75rem, 3vw, 3rem);
+  height: auto;
+  pointer-events: none;
+}
+
+.utc-workspace-crosshair {
+  position: absolute;
+  width: clamp(1.25rem, 2.5vw, 2.5rem);
+  height: auto;
+  pointer-events: none;
+}
+
+.utc-workspace-crosshair-top {
+  top: -8%;
+  left: -6%;
+}
+
+.utc-workspace-crosshair-bottom {
+  right: -4%;
+  bottom: -19%;
+}
+
+@media (min-width: 901px) {
+  .utc-workspace-layout {
+    align-items: stretch;
+    align-content: center;
+  }
+
+  .utc-workspace-visual {
+    align-self: center;
+  }
+
+  .utc-workspace-copy {
+    position: relative;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .utc-workspace-details {
+    min-height: 0;
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .utc-workspace-hero {
+    --workspace-heading-size: clamp(2.5rem, 9.5vw, 5.5rem);
+    height: auto;
+    min-height: 0;
+  }
+
+  .utc-workspace-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+    padding: 3rem 1.5rem 6rem;
+  }
+
+  .utc-workspace-description {
+    max-width: 40rem;
+  }
+
+  .utc-workspace-titlebar {
+    flex-basis: 2.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem calc(var(--workspace-cut) + 0.5rem) 0.5rem 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  .utc-workspace-photo-frame {
+    --photo-cut: max(0px, calc(var(--workspace-cut) - 2.5rem - 2px));
+  }
+
+  .utc-workspace-code-note {
+    width: 52%;
+    font-size: clamp(0.625rem, 2.3vw, 1.125rem);
+  }
+}
