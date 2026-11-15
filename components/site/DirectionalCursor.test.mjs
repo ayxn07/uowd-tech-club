@@ -184,7 +184,7 @@ test("brand arrow has opaque cobalt, a white outline and an ink contrast edge wi
   const svg = readFileSync(new URL("../../public/utc-cursor.svg", import.meta.url), "utf8");
   const css = readFileSync(new URL("./DirectionalCursor.css", import.meta.url), "utf8");
   const layout = readFileSync(new URL("../../app/layout.tsx", import.meta.url), "utf8");
-  assert.match(svg, /fill="#1042d6"/);
+  assert.match(svg, /fill="#1072eb"/);
   assert.match(svg, /stroke="#ffffff"/);
   assert.match(css, /drop-shadow\(0 0 1px var\(--utc-ink\)\)/);
   assert.match(css, /transform-origin: 18px 4px/);

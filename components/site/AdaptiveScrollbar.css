@@ -4,7 +4,7 @@
 
 .adaptive-scrollbar {
   --scrollbar-ink: #ffffff;
-  --scrollbar-grip: var(--utc-cobalt);
+  --scrollbar-grip: var(--secondary);
   position: fixed;
   z-index: 90;
   top: 16px;
@@ -18,7 +18,7 @@
 }
 
 .adaptive-scrollbar[data-light-surface] {
-  --scrollbar-ink: var(--utc-cobalt);
+  --scrollbar-ink: var(--secondary);
   --scrollbar-grip: #ffffff;
 }
 

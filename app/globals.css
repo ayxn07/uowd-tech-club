@@ -2,6 +2,8 @@
 
 :root {
   --utc-cobalt: #1042d6;
+  --secondary: #1072eb;
+  --tertiary: #edefff;
   --grid-line: rgb(255 255 255 / 0.12);
   --grid-highlight: #ffffff;
   --utc-ink: #101418;
@@ -695,6 +697,7 @@ body {
 .footer-link:hover .footer-link-label,
 .footer-link:focus-visible .footer-link-label {
   text-decoration-line: underline;
+  color: var(--secondary);
 }
 
 .footer-link:focus-visible {
@@ -1011,6 +1014,10 @@ body:has(.startup-intro[data-playing]) .site-brand {
   display: flex;
   font-size: 1rem;
   color: var(--utc-cobalt);
+}
+
+span.accent {
+  color: var(--secondary);
 }
 
 /* Width is animated directly. A 1px bar stretched with scaleX came out about
