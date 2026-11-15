@@ -1,24 +1,29 @@
 import { UtcMark } from "@/components/brand/UtcMark";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
+import { FooterStickers, StickerSlot, type FooterStickerId } from "./FooterStickers";
+
+type SocialLink = { label: string; href: string; sticker: FooterStickerId };
 
 // Real handles are still to come from the club.
-const FOLLOW = [
-  { label: "LinkedIn", href: "#" },
-  { label: "Instagram", href: "#" },
+const FOLLOW: SocialLink[] = [
+  { label: "LinkedIn", href: "#", sticker: "linkedin" },
+  { label: "Instagram", href: "#", sticker: "instagram" },
 ];
 
-const CONNECT = [
-  { label: "Email", href: "#" },
-  { label: "GitHub", href: "#" },
+const CONNECT: SocialLink[] = [
+  { label: "Email", href: "#", sticker: "email" },
+  { label: "GitHub", href: "#", sticker: "github" },
 ];
 
+// Sticker slots sit on the inner side of each word: after the left column's
+// links, before the right column's.
 function SocialList({
   label,
   links,
   align,
 }: {
   label: string;
-  links: { label: string; href: string }[];
+  links: SocialLink[];
   align: "left" | "right";
 }) {
   return (
@@ -28,10 +33,12 @@ function SocialList({
       </p>
       <ul className={`mt-4 flex flex-col gap-2 ${align === "right" ? "items-end" : "items-start"}`}>
         {links.map((link) => (
-          <li key={link.label} className="last:translate-y-[6px]">
+          <li key={link.label} className="flex items-center gap-3 last:translate-y-[6px]">
+            {align === "right" && <StickerSlot id={link.sticker} />}
             <a href={link.href} className="footer-link">
               <span className="footer-link-label">{link.label}</span>
             </a>
+            {align === "left" && <StickerSlot id={link.sticker} />}
           </li>
         ))}
       </ul>
@@ -62,6 +69,9 @@ export function Footer() {
           <p>University of Wollongong, Dubai</p>
         </div>
       </div>
+
+      {/* Stickers start on their slots and can be dragged anywhere in the footer. */}
+      <FooterStickers />
     </footer>
   );
 }
