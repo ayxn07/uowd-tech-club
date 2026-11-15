@@ -1,0 +1,6 @@
+/* Mouse-click focus must not prevent hiding after navigating to About.
+   Keyboard users still keep their focused navigation visible. */
+.site-header[data-scroll-hidden]:not(:has(:focus-visible)) {
+  transform: translateY(-100%);
+  pointer-events: none;
+}

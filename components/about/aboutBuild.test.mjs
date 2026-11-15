@@ -48,6 +48,28 @@ test("About sections share one uninterrupted background without a divider", () =
   assert.match(css, /\.utc-about-page>\.interactive-grid\{z-index:-1\}/);
 });
 
+test("the About title renders STUDENTS as a real-text highlighter with its own styles", () => {
+  const heading = main.match(/<h1 id="utc-about-heading"[^>]*>[\s\S]*?<\/h1>/)?.[0];
+  assert.ok(heading);
+  assert.ok(heading.includes('<span class="utc-about-student-highlight">students</span>.'));
+  assert.ok(css.includes(".utc-about-student-highlight{"));
+  assert.match(css, /\[data-reveal=(?:"pending"|pending)\] \.utc-about-student-highlight/);
+  assert.match(css, /\[data-reveal=(?:"shown"|shown)\] \.utc-about-student-highlight/);
+});
+
+test("the archive heading highlights only STORY, DATE and TIME in the title palette", () => {
+  const heading = main.match(/<h2 id="utc-history-heading"[^>]*>[\s\S]*?<\/h2>/)?.[0];
+  assert.ok(heading);
+  assert.deepEqual(
+    [...heading.matchAll(/<span class="utc-about-history-highlight">(.*?)<\/span>/g)].map((match) => match[1]),
+    ["story", "date", "time"],
+  );
+  const highlightStyles = css.match(/\.utc-about-student-highlight,\.utc-about-history-highlight\{([^}]+)\}/)?.[1];
+  assert.ok(highlightStyles);
+  assert.match(highlightStyles, /background:linear-gradient\(#e4e50b,#e4e50b\)/);
+  assert.match(highlightStyles, /color:var\(--utc-cobalt\)/);
+});
+
 test("the timeline is replaced by five chronological year cards with their supplied logos", () => {
   const intro = main.match(/<section class="utc-about-intro"[\s\S]*?<\/section>/)?.[0];
   assert.ok(intro);

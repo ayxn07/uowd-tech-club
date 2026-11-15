@@ -961,11 +961,6 @@ body:has(.startup-intro[data-playing]) .site-brand {
   );
 }
 
-.site-header[data-scroll-hidden]:not(:focus-within) {
-  transform: translateY(-100%);
-  pointer-events: none;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .site-header {
     transition: none;

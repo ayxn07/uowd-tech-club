@@ -2,25 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { UtcMark } from "@/components/brand/UtcMark";
+import { STARTUP_INTRO_FINISHED_EVENT } from "./motionEvents";
 
 const HOLD_MS = 1450;
 const DOCK_MS = 1100;
-const INTRO_PLAYED_KEY = "utc-startup-intro-played";
+// This guard lasts only for the current document. A refresh creates a fresh
+// module instance and plays the intro again; client navigation does not.
 let introPlayed = false;
 
 const subscribe = () => () => {};
 
-function hasIntroPlayed() {
-  try {
-    return introPlayed || window.sessionStorage.getItem(INTRO_PLAYED_KEY) === "true";
-  } catch {
-    return introPlayed;
-  }
-}
-
 export function StartupIntro() {
-  // Check tab storage only after hydration, without rendering a flash of the
-  // overlay or hiding the navbar logo during subsequent document loads.
+  // Start only after hydration, without a server/client markup mismatch.
   const hydrated = useSyncExternalStore(subscribe, () => true, () => false);
   return hydrated ? <StartupAnimation /> : null;
 }
@@ -28,7 +21,7 @@ export function StartupIntro() {
 // Reuse the same vector mark as the header, so the last animation frame and
 // the real navbar logo have exactly the same shape, size, and position.
 function StartupAnimation() {
-  const [complete, setComplete] = useState(hasIntroPlayed);
+  const [complete, setComplete] = useState(() => introPlayed);
   const rootRef = useRef<HTMLDivElement>(null);
   const markRef = useRef<HTMLDivElement>(null);
   const finish = useCallback(() => setComplete(true), []);
@@ -42,13 +35,8 @@ function StartupAnimation() {
     const shell = document.querySelector<HTMLElement>(".site-shell");
     if (!root || !mark || !target || !shell) return;
 
-    // Persist across remounts and full document navigation in the same tab.
+    // Skip only client-side remounts, never a full document refresh.
     introPlayed = true;
-    try {
-      window.sessionStorage.setItem(INTRO_PLAYED_KEY, "true");
-    } catch {
-      // The in-memory guard still works when browser storage is unavailable.
-    }
 
     root.dataset.playing = "";
     const wasInert = shell.inert;
@@ -130,6 +118,7 @@ function StartupAnimation() {
       animations.forEach((animation) => animation.cancel());
       delete root.dataset.playing;
       shell.inert = wasInert;
+      window.dispatchEvent(new Event(STARTUP_INTRO_FINISHED_EVENT));
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("resize", dismiss);
       motionPreference.removeEventListener("change", onMotionChange);

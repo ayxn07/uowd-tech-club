@@ -1,0 +1,17 @@
+.about {
+  --about-highlight-fill: var(--utc-cobalt);
+  --about-highlight-ink: #ffffff;
+}
+
+/* Preserve the highlighter sweep with cobalt fill and white lettering.
+   The pending-state selector retains cobalt before the fill sweeps in. */
+.about .hl {
+  background-image: linear-gradient(var(--about-highlight-fill), var(--about-highlight-fill));
+  color: var(--about-highlight-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about .about-copy .hl {
+    color: var(--about-highlight-ink) !important;
+  }
+}

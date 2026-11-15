@@ -1,0 +1,44 @@
+/* Shared yellow/blue highlights stay scoped to the About page and sweep
+   left-to-right when their headings scroll into view. */
+.utc-about-student-highlight,
+.utc-about-history-highlight {
+  display: inline-block;
+  padding: 0.02em 0.12em 0;
+  line-height: 0.98;
+  background: linear-gradient(#e4e50b, #e4e50b) no-repeat 0 0 / 100% 100%;
+  color: var(--utc-cobalt);
+  transition:
+    background-size 420ms cubic-bezier(0.65, 0, 0.35, 1),
+    color 120ms linear;
+}
+
+.utc-about-intro-copy[data-reveal="pending"] .utc-about-student-highlight,
+.utc-about-history-copy[data-reveal="pending"] .utc-about-history-highlight {
+  background-size: 0% 100%;
+  color: #ffffff;
+}
+
+.utc-about-intro-copy[data-reveal="shown"] .utc-about-student-highlight {
+  transition-delay: 1000ms, 1180ms;
+}
+
+.utc-about-history-copy[data-reveal="shown"] .utc-about-history-highlight {
+  transition-delay: 200ms, 380ms;
+}
+
+.utc-about-history-copy[data-reveal="shown"] .utc-about-history-highlight:nth-child(2) {
+  transition-delay: 400ms, 580ms;
+}
+
+.utc-about-history-copy[data-reveal="shown"] .utc-about-history-highlight:nth-child(3) {
+  transition-delay: 600ms, 780ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .utc-about-intro-copy .utc-about-student-highlight,
+  .utc-about-history-copy .utc-about-history-highlight {
+    background-size: 100% 100% !important;
+    color: var(--utc-cobalt) !important;
+    transition: none;
+  }
+}

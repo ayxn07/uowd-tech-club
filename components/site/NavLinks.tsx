@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { UtcChevron } from "@/components/brand/UtcMark";
+import { NAVIGATION_REPLAY_EVENT } from "./motionEvents";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -106,6 +107,7 @@ export function NavLinks({ activeHref }: { activeHref: string | null }) {
               data-href={href}
               data-pointed={href === targetHref ? "" : undefined}
               aria-current={current ? "page" : undefined}
+              onNavigate={() => window.dispatchEvent(new CustomEvent(NAVIGATION_REPLAY_EVENT, { detail: { href } }))}
               onMouseEnter={() => setHoveredHref(href)}
               onFocus={() => setHoveredHref(href)}
               onBlur={() => setHoveredHref(null)}

@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import vm from "node:vm";
 import ts from "typescript";
+import { STARTUP_INTRO_FINISHED_EVENT } from "./motionEvents.ts";
 
 const code = ts.transpileModule(
   readFileSync(new URL("./StartupIntro.tsx", import.meta.url), "utf8"),
@@ -19,6 +20,7 @@ function loadIntro(storage = new Map(), storageDisabled = false) {
   let instance;
   let nextFrame = 0;
   let animationCount = 0;
+  const dispatched = [];
   const mark = {
     getBoundingClientRect: () => ({ left: 100, top: 100, width: 500, height: 200 }),
     animate: () => {
@@ -32,6 +34,7 @@ function loadIntro(storage = new Map(), storageDisabled = false) {
     require(name) {
       if (name === "react/jsx-runtime") return { jsx, jsxs: jsx };
       if (name === "@/components/brand/UtcMark") return { UtcMark: () => null };
+      if (name === "./motionEvents") return { STARTUP_INTRO_FINISHED_EVENT };
       if (name === "react") return {
         useState: (initial) => {
           instance.complete ??= typeof initial === "function" ? initial() : initial;
@@ -66,14 +69,16 @@ function loadIntro(storage = new Map(), storageDisabled = false) {
       clearTimeout() {},
       addEventListener: (name, callback) => listeners.set(name, callback),
       removeEventListener: (name) => listeners.delete(name),
+      dispatchEvent: (event) => { dispatched.push({ type: event.type, inert: shell.inert, playing: "playing" in root.dataset }); },
     },
     requestAnimationFrame: (callback) => { frames.set(++nextFrame, callback); return nextFrame; },
     cancelAnimationFrame: (id) => frames.delete(id),
     getComputedStyle: () => ({ color: "blue" }),
+    Event,
   });
 
   return {
-    shell, root,
+    shell, root, dispatched,
     get animationCount() { return animationCount; },
     mount() {
       instance = { refs: [], refIndex: 0 };
@@ -111,10 +116,12 @@ test("the first visit animates, then releases the page and navbar logo", () => {
   mounted.cleanup();
   assert.equal(intro.shell.inert, false);
   assert.ok(!("playing" in intro.root.dataset));
+  assert.deepEqual(intro.dispatched, [{ type: STARTUP_INTRO_FINISHED_EVENT, inert: false, playing: false }]);
 });
 
-test("navigation and full document loads in the same tab never replay the intro", () => {
-  const storage = new Map();
+test("client navigation does not replay the intro but every refresh in the same tab does", () => {
+  // A flag saved by an earlier site version must no longer suppress playback.
+  const storage = new Map([["utc-startup-intro-played", "true"]]);
   const intro = loadIntro(storage);
   const first = intro.mount();
   first.cleanup();
@@ -123,11 +130,17 @@ test("navigation and full document loads in the same tab never replay the intro"
   assert.equal(intro.shell.inert, false);
   assert.ok(!("playing" in intro.root.dataset));
 
-  const nextDocument = loadIntro(storage);
-  assert.equal(nextDocument.mount().complete, true);
-  nextDocument.flushFrames();
-  assert.equal(nextDocument.animationCount, 0);
-  assert.ok(!("playing" in nextDocument.root.dataset));
+  for (let refresh = 0; refresh < 3; refresh++) {
+    const nextDocument = loadIntro(storage);
+    const mounted = nextDocument.mount();
+    assert.equal(mounted.complete, false);
+    assert.ok("playing" in nextDocument.root.dataset);
+    assert.equal(nextDocument.shell.inert, true);
+    nextDocument.flushFrames();
+    assert.equal(nextDocument.animationCount, 1);
+    mounted.cleanup();
+    assert.equal(nextDocument.shell.inert, false);
+  }
 });
 
 test("a new tab session still plays the intro", () => {
@@ -149,7 +162,7 @@ test("development effect replay does not skip the initial animation", () => {
   assert.equal(intro.shell.inert, false);
 });
 
-test("disabled storage does not block the site or replay on client remounts", () => {
+test("playback needs no browser storage and client remounts still skip the intro", () => {
   const intro = loadIntro(new Map(), true);
   const first = intro.mount();
   intro.flushFrames();
@@ -157,6 +170,12 @@ test("disabled storage does not block the site or replay on client remounts", ()
   first.cleanup();
   assert.equal(intro.mount().complete, true);
   assert.equal(intro.shell.inert, false);
+  const refreshed = loadIntro(new Map(), true);
+  const mounted = refreshed.mount();
+  refreshed.flushFrames();
+  assert.equal(refreshed.animationCount, 1);
+  assert.equal(mounted.complete, false);
+  mounted.cleanup();
 });
 
 test("the overlay is hidden until playback is explicitly enabled", () => {

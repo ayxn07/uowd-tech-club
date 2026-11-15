@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
 import { RevealOnScroll } from "./RevealOnScroll";
+import "./AboutHighlights.css";
 
 const PILLARS = [
   {
@@ -28,7 +29,7 @@ export function About() {
     >
       <InteractiveGrid dissolveRows={5} />
 
-      <RevealOnScroll className="about relative flex min-h-svh flex-col px-10 pt-48 pb-16">
+      <RevealOnScroll replayOnNavigation="/" className="about relative flex min-h-svh flex-col px-10 pt-48 pb-16">
         <div className="grid min-w-0 flex-1 grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div className="about-copy">
             <p className="hero-label">&gt;_ ABOUT UTC</p>

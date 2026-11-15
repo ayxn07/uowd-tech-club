@@ -1,0 +1,11 @@
+/* Reset without playing the transitions backwards. Once the pending state has
+   painted, the existing staggered reveal and highlighter timings take over. */
+[data-reveal-reset] .hl,
+[data-reveal-reset] .utc-about-student-highlight,
+[data-reveal-reset] .utc-about-history-highlight,
+[data-reveal-reset] .utc-about-history-highlight,
+[data-reveal-reset] .about-copy > *,
+[data-reveal-reset] .about-photo,
+[data-reveal-reset] .about-pillars {
+  transition: none !important;
+}

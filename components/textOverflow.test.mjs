@@ -7,16 +7,45 @@ const about = read("./about/AboutPage.css");
 const hero = read("./hero/Hero.css");
 const global = read("../app/globals.css");
 const rule = (css, selector) => {
-  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const match = css.match(new RegExp(`${escaped}\\s*\\{([^}]+)\\}`));
+  const rules = css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]+)\}/g);
+  const matches = [...rules].filter(([, selectors]) => selectors.split(",").some((item) => item.trim() === selector));
+  const match = matches.find(([, selectors]) => selectors.trim() === selector) ?? matches[0];
   assert.ok(match, `Missing CSS rule: ${selector}`);
-  return match[1];
+  return match[2];
 };
 
 // Source-level regression checks, not browser layout measurements.
 test("About page section labels match the homepage label font size", () => {
   const size = (declarations) => declarations.match(/font-size:\s*([^;]+);/)?.[1];
   assert.equal(size(rule(about, ".utc-about-eyebrow")), size(rule(global, ".hero-label")));
+});
+
+test("the three About highlights use brand-blue backgrounds and white text, including reduced motion", () => {
+  const component = read("./about/About.tsx");
+  const highlights = read("./about/AboutHighlights.css");
+  assert.match(component, /import "\.\/AboutHighlights\.css";/);
+  assert.deepEqual([...component.matchAll(/className="hl">([^<]+)</g)].map((match) => match[1]), ["club", "students", "builders"]);
+  assert.match(rule(highlights, ".about .hl"), /color: var\(--about-highlight-ink\);/);
+  assert.match(rule(highlights, ".about .hl"), /background-image: linear-gradient\(var\(--about-highlight-fill\), var\(--about-highlight-fill\)\);/);
+  assert.match(rule(highlights, ".about"), /--about-highlight-fill: var\(--utc-cobalt\);/);
+  assert.match(rule(highlights, ".about"), /--about-highlight-ink: #ffffff;/);
+  assert.match(highlights, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.about \.about-copy \.hl\s*\{\s*color: var\(--about-highlight-ink\) !important;/);
+});
+
+test("the About-page STUDENTS word uses a separate gold-and-blue scroll-triggered highlighter", () => {
+  const page = read("../app/about/page.tsx");
+  const highlight = read("./about/AboutStudentHighlight.css");
+  assert.match(page, /<RevealOnScroll className="utc-about-intro-copy" replayOnNavigation="\/about">/);
+  assert.match(page, /Built by <span className="utc-about-student-highlight">students<\/span>\.<\/span>/);
+  assert.match(page, /import "@\/components\/about\/AboutStudentHighlight\.css";/);
+  const styling = rule(highlight, ".utc-about-student-highlight");
+  assert.match(styling, /background: linear-gradient\(#e4e50b, #e4e50b\) no-repeat 0 0 \/ 100% 100%;/);
+  assert.match(styling, /color: var\(--utc-cobalt\);/);
+  assert.match(styling, /background-size 420ms cubic-bezier\(0\.65, 0, 0\.35, 1\)/);
+  assert.match(styling, /color 120ms linear/);
+  assert.match(rule(highlight, '.utc-about-intro-copy[data-reveal="pending"] .utc-about-student-highlight'), /background-size: 0% 100%;\s*color: #ffffff;/);
+  assert.match(rule(highlight, '.utc-about-intro-copy[data-reveal="shown"] .utc-about-student-highlight'), /transition-delay: 1000ms, 1180ms;/);
+  assert.match(highlight, /@media \(prefers-reduced-motion: reduce\)[\s\S]*background-size: 100% 100% !important;[\s\S]*color: var\(--utc-cobalt\) !important;[\s\S]*transition: none;/);
 });
 
 test("About introduction uses balanced vertical padding and consistent copy gaps", () => {
