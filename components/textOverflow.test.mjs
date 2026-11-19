@@ -32,6 +32,26 @@ test("the three About highlights use brand-blue backgrounds and white text, incl
   assert.match(highlights, /@media \(prefers-reduced-motion: reduce\)[\s\S]*?\.about \.about-copy \.hl\s*\{\s*color: var\(--about-highlight-ink\) !important;/);
 });
 
+test("homepage About copy sits above a feathered white grid wash, not a visible card", () => {
+  const component = read("./about/About.tsx");
+  const readability = read("./about/AboutReadability.css");
+  assert.match(component, /import "\.\/AboutReadability\.css";/);
+  assert.match(component, /className="section-light about-section /);
+  assert.match(component, /className="hero-body about-description mt-8"/);
+  const paragraph = rule(readability, ".about .about-description");
+  assert.match(paragraph, /position: relative;/);
+  assert.match(paragraph, /isolation: isolate;/);
+  assert.match(paragraph, /max-width: 34rem;/);
+  assert.match(paragraph, /line-height: 1\.7;/);
+  assert.doesNotMatch(paragraph, /(?:^|;)\s*(?:height|max-height|overflow|border|padding):/);
+  const wash = rule(readability, ".about .about-description::before");
+  assert.match(wash, /z-index: -1;/);
+  assert.match(wash, /background: #ffffff;/);
+  assert.match(wash, /box-shadow: 0 0 1\.25rem 0\.75rem #ffffff;/);
+  assert.match(wash, /pointer-events: none;/);
+  assert.match(rule(readability, ".section-light.about-section"), /--grid-line: rgb\(16 66 214 \/ 0\.08\);/);
+});
+
 test("the About-page STUDENTS word uses a separate gold-and-blue scroll-triggered highlighter", () => {
   const page = read("../app/about/page.tsx");
   const highlight = read("./about/AboutStudentHighlight.css");

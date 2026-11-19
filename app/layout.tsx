@@ -4,6 +4,7 @@ import { Header } from "@/components/site/Header";
 import { StartupIntro } from "@/components/site/StartupIntro";
 import { DirectionalCursor } from "@/components/site/DirectionalCursor";
 import { AdaptiveScrollbar } from "@/components/site/AdaptiveScrollbar";
+import { AudioToggle } from "@/components/site/AudioToggle";
 import "./globals.css";
 import "@/components/site/DirectionalCursor.css";
 
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="site-shell" id="site-content">
           <Header />
           {children}
+          <AudioToggle />
         </div>
       </body>
     </html>

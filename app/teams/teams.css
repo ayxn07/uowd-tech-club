@@ -1,0 +1,119 @@
+﻿.utc-teams {
+  --teams-content-offset: 32px;
+  --teams-floor-transition: max(1px, calc(max(calc(100svh - 3.75rem), 50.12vw) * 0.038 - 8px));
+  position: relative;
+  isolation: isolate;
+  background: var(--utc-cobalt);
+  color: #ffffff;
+}
+
+.utc-teams-hero {
+  position: relative;
+  isolation: isolate;
+  height: calc(max(calc(100svh - 3.75rem), 50.12vw) + var(--teams-content-offset));
+  overflow: hidden;
+}
+
+.utc-teams-backdrop {
+  position: absolute;
+  z-index: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: calc((100% - var(--teams-content-offset)) * 1.1229);
+  background:
+    linear-gradient(180deg, rgb(16 66 214 / 0.35), rgb(16 66 214 / 0.16) 28%, rgb(16 66 214 / 0.05) 50%, transparent 75%),
+    url("/images/teams/teams-panorama-backdrop.png") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.utc-teams-lettering {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: calc(100% - var(--teams-content-offset));
+  transform: translateY(calc(10px + var(--teams-content-offset)));
+  pointer-events: none;
+}
+
+.utc-teams-cutout {
+  position: absolute;
+  z-index: 2;
+  bottom: calc((100% - var(--teams-content-offset)) * 0.038);
+  left: 49.35%;
+  display: block;
+  width: 55.6%;
+  height: auto;
+  transform: translateX(-50%);
+}
+
+.utc-teams-bottom-fade {
+  position: absolute;
+  z-index: 3;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--teams-floor-transition);
+  background: linear-gradient(
+    to bottom,
+    rgb(16 66 214 / 0),
+    rgb(16 66 214 / 0.12) 40%,
+    rgb(16 66 214 / 0.35) 75%,
+    rgb(16 66 214 / 0.55)
+  );
+  pointer-events: none;
+}
+
+.utc-teams-grid-section {
+  --teams-grid-transition: var(--teams-floor-transition);
+  position: relative;
+  z-index: 4;
+  height: 100dvh;
+  margin-top: calc(0px - var(--teams-grid-transition));
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--utc-cobalt) var(--teams-grid-transition)
+  );
+}
+
+.utc-teams-grid-section > .interactive-grid {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--teams-grid-transition)
+  );
+}
+
+@media (max-width: 700px) {
+  .utc-teams {
+    --teams-floor-transition: max(1px, calc(max(calc(100svh - 3.75rem), 115vw) * 0.07 - 8px));
+  }
+
+  .utc-teams-hero {
+    height: calc(max(calc(100svh - 3.75rem), 115vw) + var(--teams-content-offset));
+  }
+
+  .utc-teams-lettering {
+    top: calc((100% - var(--teams-content-offset)) * 0.05);
+    right: auto;
+    bottom: auto;
+    left: -25%;
+    width: 150%;
+    height: 75.18vw;
+  }
+
+  .utc-teams-backdrop {
+    background-size: auto 100%;
+  }
+
+  .utc-teams-cutout {
+    bottom: calc((100% - var(--teams-content-offset)) * 0.07);
+    left: 50%;
+    width: 100%;
+  }
+
+}

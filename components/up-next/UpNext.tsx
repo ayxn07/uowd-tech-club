@@ -5,20 +5,7 @@ import Link from "next/link";
 import { useRef, type CSSProperties } from "react";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
 import { RevealOnScroll } from "@/components/about/RevealOnScroll";
-
-const EVENTS = [
-  { slug: "vibe-coding", title: "Vibe Coding", type: "Workshop", date: "2026-11-18" },
-  { slug: "git-github", title: "Git & GitHub", type: "Workshop", date: "2026-11-25" },
-  { slug: "ai-llms", title: "AI & LLMs", type: "Workshop", date: "2026-12-02" },
-  { slug: "ai-101", title: "AI 101", type: "Workshop", date: "2026-12-09" },
-];
-
-const dateFormat = new Intl.DateTimeFormat("en-GB", {
-  day: "2-digit",
-  month: "short",
-  year: "numeric",
-  timeZone: "Asia/Dubai",
-});
+import { EVENTS, formatEventDate } from "@/components/events/eventData";
 
 // Placeholder data: the same four events twice so the row overflows.
 const SLIDES = [...EVENTS, ...EVENTS];
@@ -128,7 +115,7 @@ export function UpNext() {
                   <p className="upnext-type">{event.type}</p>
                   <h3 className="upnext-name">{event.title}</h3>
                   <time className="upnext-date" dateTime={event.date}>
-                    {dateFormat.format(new Date(`${event.date}T12:00:00+04:00`))}
+                    {formatEventDate(event.date)}
                   </time>
                 </div>
               </div>

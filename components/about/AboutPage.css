@@ -236,6 +236,7 @@
 }
 
 .utc-archive {
+  clip-path: polygon(0 0, calc(100% - 1.25rem) 0, 100% 1.25rem, 100% 100%, 0 100%);
   border: 1px solid #ffffff;
   padding: clamp(1rem, 2.5vw, 2.5rem);
   background: #ffffff;

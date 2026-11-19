@@ -2,6 +2,7 @@ import Image from "next/image";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
 import { RevealOnScroll } from "./RevealOnScroll";
 import "./AboutHighlights.css";
+import "./AboutReadability.css";
 
 const PILLARS = [
   {
@@ -24,7 +25,7 @@ const PILLARS = [
 export function About() {
   return (
     <section
-      className="section-light relative min-h-svh overflow-x-clip"
+      className="section-light about-section relative min-h-svh overflow-x-clip"
       aria-labelledby="about-heading"
     >
       <InteractiveGrid dissolveRows={5} />
@@ -40,7 +41,7 @@ export function About() {
               <br />
               for <span className="hl">builders</span>
             </h2>
-            <p className="hero-body mt-8 max-w-[36rem]">
+            <p className="hero-body about-description mt-8">
               UOWD Tech Club is the student-led tech community at the
               University of Wollongong in Dubai. Members from every degree join
               teams for programming, design, media and more, then put what they

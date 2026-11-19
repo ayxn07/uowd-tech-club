@@ -1,0 +1,168 @@
+.audio-toggle {
+  position: fixed;
+  bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  left: calc(1.5rem + env(safe-area-inset-left, 0px));
+  z-index: 90;
+}
+
+.audio-toggle__button {
+  --audio-size: 3.25rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: var(--audio-size);
+  height: var(--audio-size);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--utc-cobalt);
+  border-radius: 999px;
+  background: var(--tertiary);
+  color: var(--utc-cobalt);
+  box-shadow: 0 0 0 2px rgb(237 239 255 / 0.65), 0 4px 20px rgb(16 20 24 / 0.14);
+  cursor: pointer;
+  transition:
+    width 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+.audio-toggle__button[data-expanded] {
+  width: 11.75rem;
+}
+
+.audio-toggle__button[data-playing] {
+  background: var(--utc-cobalt);
+  color: var(--tertiary);
+}
+
+.audio-toggle__button:focus-visible {
+  outline: 3px solid var(--secondary);
+  outline-offset: 5px;
+}
+
+/* A sibling button overlays the pill, avoiding nested interactive controls.
+   Leave space after the label for a small glyph with a 24px hit target. */
+.audio-toggle__dismiss {
+  position: absolute;
+  isolation: isolate;
+  top: 50%;
+  right: 0.625rem;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--tertiary);
+  cursor: pointer;
+}
+
+/* An 18px circle inside the unchanged 24px click target. */
+.audio-toggle__dismiss::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--utc-cobalt);
+  transition: background-color 180ms ease;
+}
+
+.audio-toggle__dismiss svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 0.75rem;
+  height: 0.75rem;
+  transform: translate(-50%, -50%);
+}
+
+.audio-toggle__dismiss:hover::before {
+  background: var(--secondary);
+}
+
+.audio-toggle__dismiss:focus-visible {
+  outline: 2px solid var(--utc-cobalt);
+  outline-offset: 1px;
+}
+
+.audio-toggle__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 calc(var(--audio-size) - 2px);
+  height: 100%;
+}
+
+.audio-toggle__icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.audio-toggle__slash {
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.audio-toggle__button[data-playing] .audio-toggle__slash {
+  opacity: 0;
+}
+
+.audio-toggle__label {
+  flex-shrink: 0;
+  padding: 0.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 180ms ease, transform 350ms ease;
+}
+
+.audio-toggle__button[data-expanded] .audio-toggle__label {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+
+.audio-toggle__label:hover,
+.audio-toggle__button:focus-visible .audio-toggle__label {
+  text-decoration-line: underline;
+}
+
+.audio-toggle__status:not(:empty) {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 0;
+  width: min(16rem, calc(100vw - 3rem));
+  border: 1px solid var(--utc-cobalt);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--tertiary);
+  color: var(--utc-cobalt);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .audio-toggle {
+    bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    left: calc(1rem + env(safe-area-inset-left, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-toggle__button,
+  .audio-toggle__dismiss,
+  .audio-toggle__dismiss::before,
+  .audio-toggle__label,
+  .audio-toggle__slash {
+    transition: none;
+  }
+}

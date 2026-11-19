@@ -1,0 +1,27 @@
+/* Keep the technical texture, but let content take priority in this section. */
+.section-light.about-section {
+  --grid-line: rgb(16 66 214 / 0.08);
+}
+
+.about .about-description {
+  position: relative;
+  isolation: isolate;
+  max-width: 34rem;
+  font-size: clamp(1.125rem, 1.4vw, 1.25rem);
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+/* An opaque centre removes lines under the letters. The white-only glow
+   feathers into the white section, without a visible card edge or shadow.
+   Local isolation keeps this layer behind the copy but above the grid. */
+.about .about-description::before {
+  content: "";
+  position: absolute;
+  inset: -0.25rem -0.5rem;
+  z-index: -1;
+  border-radius: 0.75rem;
+  background: #ffffff;
+  box-shadow: 0 0 1.25rem 0.75rem #ffffff;
+  pointer-events: none;
+}
