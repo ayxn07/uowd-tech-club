@@ -1,0 +1,86 @@
+/* Same box as the hero, so the lettering keeps its existing positioning. */
+.utc-teams-heading {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Without JS everything simply stays in place. Once hydrated, the heading
+   waits hidden above its spot until the hero is revealed. */
+.utc-teams-heading[data-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, -42%, 0);
+}
+
+.utc-teams-heading[data-reveal="shown"] {
+  animation: utc-teams-heading-slide 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes utc-teams-heading-slide {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -42%, 0);
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.utc-teams-arrow-stroke {
+  fill: none;
+  stroke: #ffffff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 0;
+}
+
+/* The arrows are revealed through a mask that traces their centre line from
+   the top end to the tip, starting as the lettering settles. */
+.utc-teams-heading[data-reveal="pending"] .utc-teams-arrow-stroke {
+  opacity: 0;
+  stroke-dashoffset: 1;
+}
+
+.utc-teams-heading[data-reveal="shown"] .utc-teams-arrow-stroke {
+  animation: utc-teams-arrow-draw 1.15s cubic-bezier(0.55, 0.05, 0.35, 1) 0.85s both;
+}
+
+.utc-teams-heading[data-reveal="shown"] .utc-teams-arrow-head {
+  animation-duration: 0.28s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  animation-delay: 1.96s;
+}
+
+@keyframes utc-teams-arrow-draw {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .utc-teams-heading[data-reveal],
+  .utc-teams-heading[data-reveal] .utc-teams-arrow-stroke {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+}

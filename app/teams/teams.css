@@ -45,7 +45,9 @@
   bottom: calc((100% - var(--teams-content-offset)) * 0.038);
   left: 49.35%;
   display: block;
-  width: 55.6%;
+  /* Scale with the stage height (which sizes the backdrop) so the people stay
+     in proportion to the doors; 55.6% width at the 50.12vw reference height. */
+  width: min(calc(max(calc(100svh - 3.75rem), 50.12vw) * 1.1093), 96vw);
   height: auto;
   transform: translateX(-50%);
 }
