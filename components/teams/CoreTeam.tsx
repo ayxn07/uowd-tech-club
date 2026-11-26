@@ -64,7 +64,7 @@ const CORE_TEAM: Member[] = [
 // Part of the card and arrow filenames. next/image caches optimized images by URL (for
 // hours, and in the dev server's memory), so bump this and rename the files
 // whenever the card art changes, or the old art keeps being served.
-const CARD_ART_VERSION = "v2";
+const CARD_ART_VERSION = "v3";
 
 const pct = (value: number, of: number) => `${(value / of) * 100}%`;
 
