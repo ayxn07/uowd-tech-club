@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { InteractiveGrid } from "@/components/InteractiveGrid";
 import { TeamsHeading } from "@/components/teams/TeamsHeading";
+import { CoreTeam } from "@/components/teams/CoreTeam";
 import "./teams.css";
 
 export const metadata: Metadata = {
@@ -27,9 +28,12 @@ export default function TeamsPage() {
         />
         <div className="utc-teams-bottom-fade" aria-hidden="true" />
       </section>
-      <div className="utc-teams-grid-section" aria-hidden="true">
-        <InteractiveGrid />
-      </div>
+      <section className="utc-teams-grid-section" aria-labelledby="core-team-heading">
+        <div className="utc-teams-grid-layer" aria-hidden="true">
+          <InteractiveGrid />
+        </div>
+        <CoreTeam />
+      </section>
     </main>
   );
 }
